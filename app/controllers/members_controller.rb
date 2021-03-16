@@ -1,5 +1,6 @@
 class MembersController < ApplicationController
     before_action :find_member, only: [:show, :destroy, :update]
+    skip_before_action :authorized, only: [:create, :login]
 
     def index
         @members = Member.all
@@ -33,6 +34,18 @@ class MembersController < ApplicationController
         render json: { message: "member account for: #{@member.first_name} #{@member.last_name} deleted"}
     end
 
+    def login
+        @member = Member.find_by(email: params[:member][:email])
+        if @member && @member.authenticate(params[:member][:password])
+            secret = "BoobsAndBuffaloSauce"
+            payload = { id: @member.id, role: "member" }
+            @token = JWT.encode payload, secret 
+            render json: { member: @member, token: @token }
+        else
+            render json: { errors: "Invalid Credentials"}, status: :unauthorized
+        end
+    end
+
     private
 
     def find_member
@@ -43,10 +56,10 @@ class MembersController < ApplicationController
         params.require(:member).permit(
             :first_name, 
             :last_name,
-            :gym_member_id,
+            :member_member_id,
             :email,
             :password,
-            :gym_id
+            :member_id
         )
     end
 end

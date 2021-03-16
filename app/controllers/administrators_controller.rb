@@ -1,5 +1,6 @@
 class AdministratorsController < ApplicationController
     before_action :find_admin, only: [:show, :destroy, :update]
+    skip_before_action :authorized, only: [:create, :login]
 
     def index
         @admins = Administrator.all
@@ -31,6 +32,18 @@ class AdministratorsController < ApplicationController
     def destroy
         @admin.destroy
         render json: { message: "admin account for: #{@admin.username} deleted"}
+    end
+
+    def login
+        @admin = Administrator.find_by(username: params[:admin][:username])
+        if @admin && @admin.authenticate(params[:admin][:password])
+            secret = "BoobsAndBuffaloSauce"
+            payload = { id: @admin.id, role: "admin" }
+            @token = JWT.encode payload, secret 
+            render json: { admin: @admin, token: @token }
+        else
+            render json: { errors: "Invalid Credentials"}, status: :unauthorized
+        end
     end
 
     private

@@ -1,5 +1,6 @@
 class GymsController < ApplicationController
     before_action :find_gym, only: [:show, :destroy, :update]
+    skip_before_action :authorized, only: [:create, :login]
 
     def index
         @gyms = Gym.all
@@ -31,6 +32,18 @@ class GymsController < ApplicationController
     def destroy
         @gym.destroy
         render json: { message: "gym account for: #{@gym.name} deleted"}
+    end
+
+    def login
+        @gym = Gym.find_by(email: params[:gym][:email])
+        if @gym && @gym.authenticate(params[:gym][:password])
+            secret = "BoobsAndBuffaloSauce"
+            payload = { id: @gym.id, role: "gym" }
+            @token = JWT.encode payload, secret 
+            render json: { gym: @gym, token: @token }
+        else
+            render json: { errors: "Invalid Credentials"}, status: :unauthorized
+        end
     end
 
     private
