@@ -1,3 +1,4 @@
+Administrator.destroy_all
 Member.destroy_all
 Gym.destroy_all
 
@@ -28,4 +29,10 @@ Member.create({
     gym_member_id: 1234,
     password: "Climb8r",
     gym_id: baker.id
+})
+
+Administrator.create({
+    username: "kitkat", 
+    email: "leightkt@gmail.com",
+    password: "Hardouthere4acrimp"
 })

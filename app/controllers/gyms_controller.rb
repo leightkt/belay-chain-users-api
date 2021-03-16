@@ -24,7 +24,7 @@ class GymsController < ApplicationController
         if @gym.update(gym_params)
             render json: @gym
         else
-            render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+            render json: { errors: @gym.errors.full_messages }, status: :unprocessable_entity
         end
     end
 

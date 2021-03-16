@@ -24,7 +24,7 @@ class MembersController < ApplicationController
         if @member.update(member_params)
             render json: @member
         else
-            render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+            render json: { errors: @member.errors.full_messages }, status: :unprocessable_entity
         end
     end
 
