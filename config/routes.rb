@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   post "/gymlogin", to: "gyms#login"
   post "/memberlogin", to: "members#login"
   post "/adminlogin", to: "administrators#login"
+  get "/profile", to: "application#profile"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

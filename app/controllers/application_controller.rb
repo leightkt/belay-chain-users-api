@@ -12,9 +12,9 @@ class ApplicationController < ActionController::API
     def current_user
         auth_header = request.headers["Authorization"]
         if auth_header
-            token = auth_header.split(" ")[1]
+            @token = auth_header.split(" ")[1]
             begin
-                @decoded = JWT.decode(token, secret_key)[0]
+                @decoded = JWT.decode(@token, secret_key)[0]
                 @id = @decoded["id"]
                 @role = @decoded["role"]
             rescue JWT::DecodeError
@@ -38,6 +38,17 @@ class ApplicationController < ActionController::API
             @user = Gym.find(@id)
         when "admin"
             @user = Administrator.find(@id)
+        end
+    end
+
+    def profile
+        case @role
+        when "member"
+            render json: MemberSerializer.new(@user, @token).to_serialized_json
+        when "gym"
+            render json: GymSerializer.new(@user, @token).to_serialized_json
+        when "admin"
+            render json: AdminSerializer.new(@user, @token).to_serialized_json
         end
     end
 
