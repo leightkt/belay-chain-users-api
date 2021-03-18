@@ -18,7 +18,7 @@ class GymsController < ApplicationController
             secret = "BoobsAndBuffaloSauce"
             payload = { id: @gym.id, role: "gym" }
             @token = JWT.encode payload, secret
-            render json: { user: @gym, token: @token }
+            render json: GymSerializer.new(@gym, @token).to_serialized_json
         else
             render json: { errors: @gym.errors.full_messages }, status: :unprocessable_entity
         end
@@ -43,7 +43,7 @@ class GymsController < ApplicationController
             secret = "BoobsAndBuffaloSauce"
             payload = { id: @gym.id, role: "gym" }
             @token = JWT.encode payload, secret 
-            render json: { user: @gym, token: @token }
+            render json: GymSerializer.new(@gym, @token).to_serialized_json
         else
             render json: { errors: "Invalid Credentials"}, status: :unauthorized
         end

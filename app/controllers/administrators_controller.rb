@@ -40,7 +40,7 @@ class AdministratorsController < ApplicationController
             secret = "BoobsAndBuffaloSauce"
             payload = { id: @admin.id, role: "admin" }
             @token = JWT.encode payload, secret 
-            render json: { user: @admin, token: @token }
+            render json: AdminSerializer.new(@admin, @token).to_serialized_json
         else
             render json: { errors: "Invalid Credentials"}, status: :unauthorized
         end

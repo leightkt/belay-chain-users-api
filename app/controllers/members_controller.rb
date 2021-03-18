@@ -40,7 +40,7 @@ class MembersController < ApplicationController
             secret = "BoobsAndBuffaloSauce"
             payload = { id: @member.id, role: "member" }
             @token = JWT.encode payload, secret 
-            render json: { user: @member, token: @token }
+            render json: MemberSerializer.new(@member, @token).to_serialized_json
         else
             render json: { errors: "Invalid Credentials"}, status: :unauthorized
         end
