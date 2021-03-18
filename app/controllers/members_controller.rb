@@ -35,12 +35,12 @@ class MembersController < ApplicationController
     end
 
     def login
-        @member = Member.find_by(email: params[:member][:email])
-        if @member && @member.authenticate(params[:member][:password])
+        @member = Member.find_by(email: params[:user][:email])
+        if @member && @member.authenticate(params[:user][:password])
             secret = "BoobsAndBuffaloSauce"
             payload = { id: @member.id, role: "member" }
             @token = JWT.encode payload, secret 
-            render json: { member: @member, token: @token }
+            render json: { user: @member, token: @token }
         else
             render json: { errors: "Invalid Credentials"}, status: :unauthorized
         end
@@ -53,7 +53,7 @@ class MembersController < ApplicationController
     end
 
     def member_params
-        params.require(:member).permit(
+        params.require(:user).permit(
             :first_name, 
             :last_name,
             :member_member_id,

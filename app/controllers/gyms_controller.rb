@@ -15,7 +15,10 @@ class GymsController < ApplicationController
         @gym = Gym.new(gym_params)
         if @gym.valid?
             @gym.save
-            render json: @gym
+            secret = "BoobsAndBuffaloSauce"
+            payload = { id: @gym.id, role: "gym" }
+            @token = JWT.encode payload, secret
+            render json: { user: @gym, token: @token }
         else
             render json: { errors: @gym.errors.full_messages }, status: :unprocessable_entity
         end
@@ -35,12 +38,12 @@ class GymsController < ApplicationController
     end
 
     def login
-        @gym = Gym.find_by(email: params[:gym][:email])
-        if @gym && @gym.authenticate(params[:gym][:password])
+        @gym = Gym.find_by(email: params[:user][:email])
+        if @gym && @gym.authenticate(params[:user][:password])
             secret = "BoobsAndBuffaloSauce"
             payload = { id: @gym.id, role: "gym" }
             @token = JWT.encode payload, secret 
-            render json: { gym: @gym, token: @token }
+            render json: { user: @gym, token: @token }
         else
             render json: { errors: "Invalid Credentials"}, status: :unauthorized
         end
@@ -53,7 +56,7 @@ class GymsController < ApplicationController
     end
 
     def gym_params
-        params.require(:gym).permit(
+        params.require(:user).permit(
             :name, 
             :street_address,
             :city,

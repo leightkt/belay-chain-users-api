@@ -35,12 +35,12 @@ class AdministratorsController < ApplicationController
     end
 
     def login
-        @admin = Administrator.find_by(username: params[:admin][:username])
-        if @admin && @admin.authenticate(params[:admin][:password])
+        @admin = Administrator.find_by(username: params[:user][:username])
+        if @admin && @admin.authenticate(params[:user][:password])
             secret = "BoobsAndBuffaloSauce"
             payload = { id: @admin.id, role: "admin" }
             @token = JWT.encode payload, secret 
-            render json: { admin: @admin, token: @token }
+            render json: { user: @admin, token: @token }
         else
             render json: { errors: "Invalid Credentials"}, status: :unauthorized
         end
@@ -53,7 +53,7 @@ class AdministratorsController < ApplicationController
     end
 
     def admin_params
-        params.require(:admin).permit(
+        params.require(:user).permit(
             :username, 
             :email,
             :password
