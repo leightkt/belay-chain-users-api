@@ -3,6 +3,7 @@ class MemberSerializer
     def initialize member, token
         @member = member
         @token = token
+        @certifications = []
     end
 
     def to_serialized_json
@@ -32,7 +33,11 @@ class MemberSerializer
             headers: { :accept => :json, content_type: :json }
         )
         result = JSON.parse(rest_client)
-        @certifications = result
+        result.map do |certification|
+            gym = Gym.find(certification["data"]["gym_id"])
+            certification["gym"] = gym.name
+            @certifications << certification
+        end
     end
 
 
