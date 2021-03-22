@@ -13,7 +13,8 @@ class AdminSerializer
                 email: @admin.email,
                 role: "admin"
             },
-            token: @token
+            token: @token,
+            certifications: []
         }
         data.to_json()
     end
