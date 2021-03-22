@@ -11,6 +11,7 @@ class AdminSerializer
                 id: @admin.id,
                 username: @admin.username,
                 email: @admin.email,
+                role: "admin"
             },
             token: @token
         }

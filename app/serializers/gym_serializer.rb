@@ -14,7 +14,8 @@ class GymSerializer
                 city: @gym.city,
                 state: @gym.state,
                 zip_code: @gym.zip_code,
-                email: @gym.email
+                email: @gym.email,
+                role: "gym"
             },
             token: @token
         }

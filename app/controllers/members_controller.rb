@@ -23,7 +23,8 @@ class MembersController < ApplicationController
 
     def update
         if @member.update(member_params)
-            render json: @member
+            @token = 0
+            render json: MemberSerializer.new(@member, @token).to_serialized_json
         else
             render json: { errors: @member.errors.full_messages }, status: :unprocessable_entity
         end
@@ -62,4 +63,5 @@ class MembersController < ApplicationController
             :member_id
         )
     end
+
 end

@@ -26,7 +26,8 @@ class GymsController < ApplicationController
 
     def update
         if @gym.update(gym_params)
-            render json: @gym
+            @token = 0
+            render json: GymSerializer.new(@gym, @token).to_serialized_json
         else
             render json: { errors: @gym.errors.full_messages }, status: :unprocessable_entity
         end
