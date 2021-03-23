@@ -25,7 +25,6 @@ class MemberSerializer
     end
 
     def get_certifications
-        payload = { user_member_number: @member.gym_member_id, gym_id: @member.gym.id }
         rest_client = RestClient::Request.execute(
             method: :post, 
             url: 'http://localhost:3001/member', 

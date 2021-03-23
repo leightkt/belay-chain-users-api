@@ -50,6 +50,21 @@ class GymsController < ApplicationController
         end
     end
 
+    def add_certification
+        rest_client = RestClient::Request.execute(
+            method: :post, 
+            url: 'http://localhost:3001/addcertandbroadcast', 
+            payload: { 
+                "gym_id": gym_params[:gym_id], 
+                "user_member_number": gym_params[:gym_member_id], 
+                "cert_type": gym_params[:cert_type] 
+            }.to_json,
+            headers: { :accept => :json, content_type: :json }
+        )
+        result = JSON.parse(rest_client)
+        render json: { newCert: result}
+    end
+
     private
 
     def find_gym
@@ -65,7 +80,10 @@ class GymsController < ApplicationController
             :zip_code,
             :email,
             :password,
-            :phone
+            :phone,
+            :gym_member_id,
+            :cert_type, 
+            :gym_id
         )
     end
 

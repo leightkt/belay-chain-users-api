@@ -47,6 +47,28 @@ class MembersController < ApplicationController
         end
     end
 
+    def find_member_by
+        if member_params[:email] != ""
+            @member = Member.find_by(email: member_params[:email], gym_id: member_params[:gym_id])
+            render_member
+        else 
+            @member = Member.find_by(
+                first_name: member_params[:first_name], 
+                last_name: member_params[:last_name],
+                gym_id: member_params[:gym_id]
+            )
+            render_member
+        end
+    end
+
+    def render_member
+        if @member 
+            render json: { member_id: @member.gym_member_id }
+        else 
+            render json: { errors: "Member Not Found"}
+        end
+    end
+
     private
 
     def find_member
@@ -60,7 +82,8 @@ class MembersController < ApplicationController
             :member_member_id,
             :email,
             :password,
-            :member_id
+            :member_id,
+            :gym_id
         )
     end
 

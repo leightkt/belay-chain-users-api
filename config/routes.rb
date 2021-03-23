@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   post "/memberlogin", to: "members#login"
   post "/adminlogin", to: "administrators#login"
   get "/profile", to: "application#profile"
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  post "/findMember", to: "members#find_member_by"
+  post "/addCertification", to: "gyms#add_certification"
 end
