@@ -35,11 +35,13 @@ class GymSerializer
         )
         result = JSON.parse(rest_client)
         result.map do |certification|
-            member = Member.find_by(gym_member_id: certification["data"]["user_member_number"], gym_id: @gym.id)
-            certification["first_name"] = member.first_name
-            certification["last_name"] = member.last_name
-            certification["email"] = member.email
-            @certifications << certification
+            @member = Member.find_by(gym_member_id: certification["data"]["user_member_number"], gym_id: @gym.id)
+            if @member 
+                certification["first_name"] = @member.first_name
+                certification["last_name"] = @member.last_name
+                certification["email"] = @member.email
+                @certifications << certification
+            end
         end
     end
 

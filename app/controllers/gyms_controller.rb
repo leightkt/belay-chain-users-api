@@ -62,7 +62,7 @@ class GymsController < ApplicationController
             headers: { :accept => :json, content_type: :json }
         )
         result = JSON.parse(rest_client)
-        render json: { newCert: result}
+        render json: CertificationSerializer.new( result["newblock"] ).to_serialized_json
     end
 
     private
