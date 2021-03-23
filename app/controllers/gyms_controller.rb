@@ -62,6 +62,7 @@ class GymsController < ApplicationController
             headers: { :accept => :json, content_type: :json }
         )
         result = JSON.parse(rest_client)
+        byebug
         render json: CertificationSerializer.new( result["newblock"] ).to_serialized_json
     end
 
