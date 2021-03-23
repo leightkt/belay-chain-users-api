@@ -11,9 +11,11 @@ class CertificationSerializer
 
     def get_details
         @member = Member.find_by(gym_member_id: @block["data"]["user_member_number"], gym_id: @block["data"]["gym_id"])
+        @gym = Gym.find(@block["data"]["gym_id"])
         @block["first_name"] = @member.first_name
         @block["last_name"] = @member.last_name
         @block["email"] = @member.email
+        @block['gym'] = @gym.name
     end
 
 end

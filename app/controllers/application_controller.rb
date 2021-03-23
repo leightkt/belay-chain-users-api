@@ -52,6 +52,25 @@ class ApplicationController < ActionController::API
         end
     end
 
+    def verify
+        @hash = params[:hash]
+        rest_client = RestClient::Request.execute(
+            method: :post, 
+            url: 'http://localhost:3001/verify', 
+            payload: { 
+                "hash": @hash
+            }.to_json,
+            headers: { :accept => :json, content_type: :json }
+        )
+        result = JSON.parse(rest_client)
+
+        if result.kind_of?(Array)
+            render json: CertificationSerializer.new( result[0] ).to_serialized_json
+        else 
+            render json: { errors: result["errors"]}
+        end
+    end
+
     def secret_key
         secret_key = "BoobsAndBuffaloSauce"
     end
