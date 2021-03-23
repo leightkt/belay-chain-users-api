@@ -63,7 +63,7 @@ class MembersController < ApplicationController
 
     def render_member
         if @member 
-            render json: { member_id: @member.gym_member_id }
+            render json: { member_id: @member.gym_member_id, email: @member.email }
         else 
             render json: { errors: "Member Not Found"}
         end

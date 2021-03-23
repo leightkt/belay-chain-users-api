@@ -51,19 +51,40 @@ class GymsController < ApplicationController
     end
 
     def add_certification
-        rest_client = RestClient::Request.execute(
-            method: :post, 
-            url: 'http://localhost:3001/addcertandbroadcast', 
-            payload: { 
-                "gym_id": gym_params[:gym_id], 
-                "user_member_number": gym_params[:gym_member_id], 
-                "cert_type": gym_params[:cert_type] 
-            }.to_json,
-            headers: { :accept => :json, content_type: :json }
-        )
-        result = JSON.parse(rest_client)
-        byebug
-        render json: CertificationSerializer.new( result["newblock"] ).to_serialized_json
+        @member = check_or_create_member gym_params[:gym_id], gym_params[:gym_member_id], gym_params[:email]
+
+        if @member
+            rest_client = RestClient::Request.execute(
+                method: :post, 
+                url: 'http://localhost:3001/addcertandbroadcast', 
+                payload: { 
+                    "gym_id": gym_params[:gym_id], 
+                    "user_member_number": gym_params[:gym_member_id], 
+                    "cert_type": gym_params[:cert_type] 
+                }.to_json,
+                headers: { :accept => :json, content_type: :json }
+            )
+            result = JSON.parse(rest_client)
+            render json: CertificationSerializer.new( result["newblock"] ).to_serialized_json
+        else 
+            render json: { errors: "Could not create new member"}
+        end
+    end
+
+    def check_or_create_member gym_id, gym_member_id, email
+        @member = Member.find_by(gym_id: gym_id, gym_member_id: gym_member_id)
+        if !@member
+            @member = Member.new(gym_id: gym_id, gym_member_id: gym_member_id, password: "Checkyourkn0t", email: email)
+            if @member.valid? 
+                @member.save
+                return @member
+            else 
+                return nil
+            end
+        else
+            return @member
+        end
+
     end
 
     private

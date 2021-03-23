@@ -2,7 +2,7 @@ class Member < ApplicationRecord
     has_secure_password
     belongs_to :gym
 
-    validates :first_name, :last_name, :email, :password, :gym_member_id, presence: true
+    validates :gym_id, :gym_member_id, presence: true
     validates :email, uniqueness: { message: "should be unique and %{value} is taken."}
     validates :password, length: { in: 6..20 }
     validates :password, format: {with: /[\d]/, message: "password must include at least 1 number"}
