@@ -63,9 +63,9 @@ class ApplicationController < ActionController::API
             headers: { :accept => :json, content_type: :json }
         )
         result = JSON.parse(rest_client)
-
-        if result.kind_of?(Array)
-            render json: CertificationSerializer.new( result[0] ).to_serialized_json
+        
+        if result["_id"]
+            render json: CertificationSerializer.new( result ).to_serialized_json
         else 
             render json: { errors: result["errors"]}
         end
