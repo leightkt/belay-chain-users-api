@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-    before_action :authorized
+    before_action :authorized, except: [:verify]
 
     def authorized
         render json: { message: "Please log in"} unless logged_in
@@ -63,7 +63,7 @@ class ApplicationController < ActionController::API
             headers: { :accept => :json, content_type: :json }
         )
         result = JSON.parse(rest_client)
-        
+
         if result["_id"]
             render json: CertificationSerializer.new( result ).to_serialized_json
         else 
