@@ -62,7 +62,7 @@ class GymsController < ApplicationController
                     "user_member_number": gym_params[:gym_member_id], 
                     "cert_type": gym_params[:cert_type] 
                 }.to_json,
-                headers: { :accept => :json, content_type: :json }
+                headers: { :accept => :json, content_type: :json, Authorization: @token }
             )
             result = JSON.parse(rest_client)
             render json: CertificationSerializer.new( result["newblock"] ).to_serialized_json

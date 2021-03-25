@@ -29,7 +29,7 @@ class MemberSerializer
             method: :post, 
             url: 'http://localhost:3001/member', 
             payload: { "user_member_number": @member.gym_member_id, "gym_id": @member.gym.id }.to_json,
-            headers: { :accept => :json, content_type: :json }
+            headers: { :accept => :json, content_type: :json, Authorization: @token }
         )
         result = JSON.parse(rest_client)
         result.map do |certification|

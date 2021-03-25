@@ -31,7 +31,7 @@ class GymSerializer
             method: :post, 
             url: 'http://localhost:3001/gym', 
             payload: { "gym_id": @gym.id }.to_json,
-            headers: { :accept => :json, content_type: :json }
+            headers: { :accept => :json, content_type: :json, Authorization: @token }
         )
         result = JSON.parse(rest_client)
         result.map do |certification|
