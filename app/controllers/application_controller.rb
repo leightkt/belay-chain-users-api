@@ -64,7 +64,7 @@ class ApplicationController < ActionController::API
         )
         result = JSON.parse(rest_client)
 
-        if result["_id"]
+        if result["index"]
             render json: CertificationSerializer.new( result ).to_serialized_json
         else 
             render json: { errors: result["errors"]}
