@@ -45,8 +45,7 @@ class GymsController < ApplicationController
     end
 
     def destroy
-        @gym.destroy
-        render json: { message: "gym account for: #{@gym.name} deleted"}
+        render json: { errors: "Cannot delete #{@gym.name} account. Contact Administrator to Transfer Existing Certifications First."}
     end
 
     def login
