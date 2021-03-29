@@ -26,8 +26,19 @@ class GymsController < ApplicationController
 
     def update
         if @gym.update(gym_params)
-            @token = 0
-            render json: GymSerializer.new(@gym, @token).to_serialized_json
+            @token = gym_params[:token]
+            render json: { 
+                user: {
+                    id: @gym.id,
+                    name: @gym.name,
+                    street_address: @gym.street_address,
+                    city: @gym.city,
+                    state: @gym.state,
+                    zip_code: @gym.zip_code,
+                    email: @gym.email,
+                    role: "gym"
+                }
+            }
         else
             render json: { errors: @gym.errors.full_messages }, status: :unprocessable_entity
         end
@@ -105,7 +116,9 @@ class GymsController < ApplicationController
             :phone,
             :gym_member_id,
             :cert_type, 
-            :gym_id
+            :gym_id,
+            :id,
+            :token
         )
     end
 

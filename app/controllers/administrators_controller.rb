@@ -23,8 +23,14 @@ class AdministratorsController < ApplicationController
 
     def update
         if @admin.update(admin_params)
-            @token = 0
-            render json: AdminSerializer.new(@admin, @token).to_serialized_json
+            render json: {
+                user: {
+                    id: @admin.id,
+                    username: @admin.username,
+                    email: @admin.email,
+                    role: "admin"
+                }
+            }
         else
             render json: { errors: @admin.errors.full_messages }, status: :unprocessable_entity
         end

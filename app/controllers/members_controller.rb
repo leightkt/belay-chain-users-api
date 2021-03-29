@@ -23,8 +23,17 @@ class MembersController < ApplicationController
 
     def update
         if @member.update(member_params)
-            @token = 0
-            render json: MemberSerializer.new(@member, @token).to_serialized_json
+            render json: {
+                user: {
+                    id: @member.id,
+                    gym_member_id: @member.gym_member_id,
+                    first_name: @member.first_name,
+                    last_name: @member.last_name,
+                    email: @member.email,
+                    gym: @member.gym.name,
+                    role: "member"
+                }
+            }
         else
             render json: { errors: @member.errors.full_messages }, status: :unprocessable_entity
         end
