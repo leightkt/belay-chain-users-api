@@ -27,12 +27,12 @@ Member.create({
     last_name: "Leight",
     email: "leightkt@gmail.com",
     gym_member_id: 1234,
-    password: "Climb8r",
+    password: "Climbing8",
     gym_id: baker.id
 })
 
 Administrator.create({
     username: "kitkat", 
     email: "leightkt@gmail.com",
-    password: "Hardouthere4acrimp"
+    password: "Climbing8"
 })
