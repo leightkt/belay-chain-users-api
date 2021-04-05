@@ -48,18 +48,6 @@ class GymsController < ApplicationController
         render json: { errors: "Cannot delete #{@gym.name} account. Contact Administrator to Transfer Existing Certifications First."}
     end
 
-    def login
-        @gym = Gym.find_by(email: params[:user][:email])
-        if @gym && @gym.authenticate(params[:user][:password])
-            secret = "BoobsAndBuffaloSauce"
-            payload = { id: @gym.id, role: "gym" }
-            @token = JWT.encode payload, secret 
-            render json: GymSerializer.new(@gym, @token).to_serialized_json
-        else
-            render json: { errors: "Invalid Credentials"}, status: :unauthorized
-        end
-    end
-
     def add_certification
         @member = check_or_create_member gym_params[:gym_id], gym_params[:gym_member_id], gym_params[:email]
 

@@ -44,18 +44,6 @@ class MembersController < ApplicationController
         render json: { message: "member account for: #{@member.first_name} #{@member.last_name} deleted"}
     end
 
-    def login
-        @member = Member.find_by(email: params[:user][:email])
-        if @member && @member.authenticate(params[:user][:password])
-            secret = "BoobsAndBuffaloSauce"
-            payload = { id: @member.id, role: "member" }
-            @token = JWT.encode payload, secret 
-            render json: MemberSerializer.new(@member, @token).to_serialized_json
-        else
-            render json: { errors: "Invalid Credentials"}, status: :unauthorized
-        end
-    end
-
     def find_member_by
         if member_params[:email] != ""
             @member = Member.find_by(email: member_params[:email], gym_id: member_params[:gym_id])
