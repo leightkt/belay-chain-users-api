@@ -41,18 +41,6 @@ class AdministratorsController < ApplicationController
         render json: { message: "admin account for: #{@admin.username} deleted"}
     end
 
-    def login
-        @admin = Administrator.find_by(username: params[:user][:username])
-        if @admin && @admin.authenticate(params[:user][:password])
-            secret = "BoobsAndBuffaloSauce"
-            payload = { id: @admin.id, role: "admin" }
-            @token = JWT.encode payload, secret 
-            render json: AdminSerializer.new(@admin, @token).to_serialized_json
-        else
-            render json: { errors: "Invalid Credentials"}, status: :unauthorized
-        end
-    end
-
     private
 
     def find_admin

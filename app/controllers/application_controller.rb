@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-    before_action :authorized, except: [:verify]
+    before_action :authorized, except: [:verify, :login]
 
     def authorized
         render json: { message: "Please log in"} unless logged_in
@@ -50,6 +50,39 @@ class ApplicationController < ActionController::API
         when "admin"
             render json: AdminSerializer.new(@user, @token).to_serialized_json
         end
+    end
+
+    def lookup_user 
+        case @role
+        when "member"
+            @user = Member.find_by(email: @email)
+        when "gym"
+            @user = Gym.find_by(email: @email)
+        when "admin"
+            @user = Administrator.find_by(username: @username)
+        end
+    end
+
+    def login
+        @role = params[:user][:role]
+
+        if params[:user][:email]
+            @email = params[:user][:email]
+        else 
+            @username = params[:user][:username]
+        end
+
+        lookup_user
+
+        if @user && @user.authenticate(params[:user][:password])
+            secret = "BoobsAndBuffaloSauce"
+            payload = { id: @user.id, role: @role }
+            @token = JWT.encode payload, secret 
+            profile
+        else
+            render json: { errors: "Invalid Credentials"}, status: :unauthorized
+        end
+        
     end
 
     def verify
