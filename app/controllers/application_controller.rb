@@ -75,7 +75,7 @@ class ApplicationController < ActionController::API
         lookup_user
 
         if @user && @user.authenticate(params[:user][:password])
-            secret = "BoobsAndBuffaloSauce"
+            secret = "BootsAndBuffaloSauce"
             payload = { id: @user.id, role: @role }
             @token = JWT.encode payload, secret 
             profile
@@ -105,6 +105,6 @@ class ApplicationController < ActionController::API
     end
 
     def secret_key
-        secret_key = "BoobsAndBuffaloSauce"
+        secret_key = "BootsAndBuffaloSauce"
     end
 end

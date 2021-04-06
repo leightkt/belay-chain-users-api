@@ -15,7 +15,7 @@ class GymsController < ApplicationController
         @gym = Gym.new(gym_params)
         if @gym.valid?
             @gym.save
-            secret = "BoobsAndBuffaloSauce"
+            secret = "BootsAndBuffaloSauce"
             payload = { id: @gym.id, role: "gym" }
             @token = JWT.encode payload, secret
             render json: GymSerializer.new(@gym, @token).to_serialized_json
