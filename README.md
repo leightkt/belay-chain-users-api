@@ -71,4 +71,4 @@ This app was created using Node.js, Express, Mongoose, MongoDB, Bcrypt, JWT, Rub
 
 
 ## DEMONSTRATION
-A demostration of the app can be viewed here: https://youtu.be/ufqZ0E2ht78
+A demostration of the app can be viewed here: https://youtu.be/lMzP-tAFLZk 
